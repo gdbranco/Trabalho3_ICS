@@ -1,9 +1,12 @@
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaMessage;
@@ -14,6 +17,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -27,6 +31,9 @@ import javax.swing.JButton;
 import sintese.*;
 
 public class Interface extends JFrame {
+	private int NOTE_ON = 144;
+	private int NOT_OFF = 128;
+	private Vector lista = null;
 	private static final long serialVersionUID = 1L;
 
 	private File midi=null;
@@ -159,6 +166,7 @@ public class Interface extends JFrame {
 			System.out.println("Quantidade de trilhas: " + n_trilhas);
 			for(int i=0;i<n_trilhas;i++)
 			{
+				System.in.read();
 				int n_eventos = trilhas[i].size();
 				System.out.println("Quantidade de eventos na trilha " + i + ": " + n_eventos);
 				for(int j=0;j<n_eventos;j++)
@@ -166,11 +174,14 @@ public class Interface extends JFrame {
 					MidiEvent e = trilhas[i].get(j);
 					MidiMessage msg = e.getMessage();
 					float divtype = s.getDivisionType();
-					if(msg instanceof MetaMessage)
+					if(msg instanceof ShortMessage)
 					{
-						if(divtype == Sequence.PPQ)
-						{
-							if(((MetaMessage) msg).getType() == 0xFF)
+							int Command = ((ShortMessage)msg).getCommand();
+							int status = ((ShortMessage)msg).getStatus();
+							int data1 = ((ShortMessage)msg).getData1();
+							int data2 = ((ShortMessage)msg).getData2();
+							System.out.println("Data nos bytes: "+Command+" "+status+" "+data1+" "+data2);
+							/*if(((ShortMessage) msg).get) == 0xFF)
 							{
 								byte[] data = ((MetaMessage)msg).getData();
 								System.out.println("Quantidade de data no evento " +j+ ": " + data.length);
@@ -179,8 +190,7 @@ public class Interface extends JFrame {
 								        sb.append(String.format("%02X ", b));
 								    }
 								    System.out.println("Data nos bytes: " + sb.toString());
-							}
-						}
+							}*/
 					}
 				}
 			}
