@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -39,11 +40,31 @@ public class Interface extends JFrame {
 	private int T = 20;
 	private int F0 = 220;
 	private static final long serialVersionUID = 1L;
-
+	private Envoltoria fade_in, fade_out;
 	private File midi=null;
-
 	private JPanel contentPane;
-
+	private void setFade_in()
+	{
+		Curva c_fadein = new Curva(512);
+		c_fadein.addPonto(0, 0);
+		c_fadein.addPonto(512, 5000);
+		fade_in = new Envoltoria(c_fadein);
+	}
+	private Envoltoria getFade_in()
+	{
+		return this.fade_in;
+	}
+	private void setFade_out()
+	{
+		Curva c_fadein = new Curva(512);
+		c_fadein.addPonto(0, 5000);
+		c_fadein.addPonto(512, 0);
+		fade_out = new Envoltoria(c_fadein);
+	}
+	private Envoltoria getFade_out()
+	{
+		return this.fade_out;
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -61,16 +82,114 @@ public class Interface extends JFrame {
 	}
 	public void getTone()
 	{
-		Curva curva = new Curva(T);
-		for(int t=0;t<20;t++)
-		{
-			curva.addPonto(t, fS(t));
-			System.out.println(fS(t));
-		}
-		Envoltoria env = new Envoltoria(curva);
-		env.setGanho(250000f);
-		Som som = new Som(env,10f,"Teste");
-		som.visualiza();
+		setFade_out();
+		setFade_in();
+		Oscilador osc = new Oscilador(fade_out);
+		Oscilador osc2 = new Oscilador(fade_in);
+		LinkedList<Nota> lista_notas = new LinkedList<Nota>();
+		lista_notas.add(new Nota(1f, 880f, 33f));
+		lista_notas.add(new Nota(1f, 825f, 33f));
+		lista_notas.add(new Nota(1f, 770f, 33f));
+		lista_notas.add(new Nota(1f, 715f, 33f));
+		lista_notas.add(new Nota(1f, 660f, 33f));
+		lista_notas.add(new Nota(1f, 605f, 33f));
+		lista_notas.add(new Nota(1f, 495f, 33f));
+		lista_notas.add(new Nota(1f, 440f, 33f));
+		Melodia melodia = new Melodia(lista_notas);
+		//
+		LinkedList<Nota> lista_notasr = new LinkedList<Nota>();
+		lista_notasr.add(new Nota(1f, 440f, 33f));
+		lista_notasr.add(new Nota(1f, 495f, 33f));
+		lista_notasr.add(new Nota(1f, 605f, 33f));
+		lista_notasr.add(new Nota(1f, 660f, 33f));
+		lista_notasr.add(new Nota(1f, 715f, 33f));
+		lista_notasr.add(new Nota(1f, 770f, 33f));
+		lista_notasr.add(new Nota(1f, 880f, 33f));
+		lista_notasr.add(new Nota(1f, 825f, 33f));
+		Melodia melodiar = new Melodia(lista_notasr);
+		LinkedList<Nota> lista_notas2 = new LinkedList<Nota>();
+		//lista_notas2.add(new Nota(1f, 440f, 33f));
+		lista_notas2.add(new Nota(1f, 412,5f, 33f));
+		lista_notas2.add(new Nota(1f, 385f, 33f));
+		lista_notas2.add(new Nota(1f, 357,5f, 33f));
+		lista_notas2.add(new Nota(1f, 330f, 33f));
+		lista_notas2.add(new Nota(1f, 302,5f, 33f));
+		lista_notas2.add(new Nota(1f, 275f, 33f));
+		lista_notas2.add(new Nota(1f, 247,5f, 33f));
+		lista_notas2.add(new Nota(1f, 220f, 33f));
+		Melodia melodia2 = new Melodia(lista_notas2);
+		//
+		LinkedList<Nota> lista_notas2r = new LinkedList<Nota>();
+		lista_notas2r.add(new Nota(1f, 220f, 33f));
+		lista_notas2r.add(new Nota(1f, 247,5f, 33f));
+		lista_notas2r.add(new Nota(1f, 275f, 33f));
+		lista_notas2r.add(new Nota(1f, 302,5f, 33f));
+		lista_notas2r.add(new Nota(1f, 330f, 33f));
+		lista_notas2r.add(new Nota(1f, 357,5f, 33f));
+		lista_notas2r.add(new Nota(1f, 385f, 33f));
+		lista_notas2r.add(new Nota(1f, 412,5f, 33f));
+		Melodia melodia2r = new Melodia(lista_notas2r);
+		LinkedList<Nota> lista_notas3 = new LinkedList<Nota>();
+		//lista_notas3.add(new Nota(1f, 220f, 33f));
+		lista_notas3.add(new Nota(1f, 206,25f, 33f));
+		lista_notas3.add(new Nota(1f, 192,5f, 33f));
+		lista_notas3.add(new Nota(1f, 178,75f, 33f));
+		lista_notas3.add(new Nota(1f, 165f, 33f));
+		lista_notas3.add(new Nota(1f, 151,25f, 33f));
+		lista_notas3.add(new Nota(1f, 137,5f, 33f));
+		lista_notas3.add(new Nota(1f, 123,75f, 33f));
+		lista_notas3.add(new Nota(1f, 110f, 33f));
+		Melodia melodia3 = new Melodia(lista_notas3);
+		//
+		LinkedList<Nota> lista_notas3r = new LinkedList<Nota>();
+		lista_notas3r.add(new Nota(1f, 110f, 33f));
+		lista_notas3r.add(new Nota(1f, 123,75f, 33f));
+		lista_notas3r.add(new Nota(1f, 137,5f, 33f));
+		lista_notas3r.add(new Nota(1f, 151,25f, 33f));
+		lista_notas3r.add(new Nota(1f, 165f, 33f));
+		lista_notas3r.add(new Nota(1f, 178,75f, 33f));
+		lista_notas3r.add(new Nota(1f, 192,5f, 33f));
+		lista_notas3r.add(new Nota(1f, 206,25f, 33f));
+		Melodia melodia3r = new Melodia(lista_notas3r);
+		LinkedList<Nota> lista_notas4 = new LinkedList<Nota>();
+		//lista_notas3.add(new Nota(1f, 220f, 33f));
+		lista_notas4.add(new Nota(1f, 103,125f, 33f));
+		lista_notas4.add(new Nota(1f, 96,25f, 33f));
+		lista_notas4.add(new Nota(1f, 89,375f, 33f));
+		lista_notas4.add(new Nota(1f, 82,5f, 33f));
+		lista_notas4.add(new Nota(1f, 75,625f, 33f));
+		lista_notas4.add(new Nota(1f, 68,75f, 33f));
+		lista_notas4.add(new Nota(1f, 61,875f, 33f));
+		lista_notas4.add(new Nota(1f, 55f, 33f));
+		Melodia melodia4 = new Melodia(lista_notas4);
+		//
+		LinkedList<Nota> lista_notas4r = new LinkedList<Nota>();
+		//lista_notas3.add(new Nota(1f, 220f, 33f));
+		lista_notas4r.add(new Nota(1f, 55f, 33f));
+		lista_notas4r.add(new Nota(1f, 61,875f, 33f));
+		lista_notas4r.add(new Nota(1f, 68,75f, 33f));
+		lista_notas4r.add(new Nota(1f, 75,625f, 33f));
+		lista_notas4r.add(new Nota(1f, 82,5f, 33f));
+		lista_notas4r.add(new Nota(1f, 89,375f, 33f));
+		lista_notas4r.add(new Nota(1f, 96,25f, 33f));
+		lista_notas4r.add(new Nota(1f, 103,125f, 33f));
+		Melodia melodia4r = new Melodia(lista_notas4r);
+		Voz voz = new Voz(osc);
+		voz.addMelodia(melodia);
+		voz.addMelodia(melodia2);
+		voz.addMelodia(melodia3);
+		voz.addMelodia(melodia4);
+		Voz voz2 = new Voz(osc2);
+		voz2.addMelodia(melodia4r);
+		voz2.addMelodia(melodia3r);
+		voz2.addMelodia(melodia2r);
+		voz2.addMelodia(melodiar);
+		//voz2.getSom().visualiza();
+		//voz.getSom().visualiza();
+		Polifonia poli = new Polifonia();
+		poli.addVoz(voz);
+		poli.addVoz(voz2);
+		poli.getSom().visualiza();
 	}
 	//Para t E [0,T[
 	private double fS(double t)
