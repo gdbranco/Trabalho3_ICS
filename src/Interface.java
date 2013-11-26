@@ -32,39 +32,26 @@ public class Interface extends JFrame {
 	private int T = 20;
 	private int F0 = 220;
 	private static final long serialVersionUID = 1L;
-	InstrumentoAditivo Ins1,Ins2,Ins3,Ins4;
+	InstrumentoAditivo Ins1;
 	private File midi=null;
 	private JPanel contentPane;
-	private Envoltoria setSino()
-	{
-		Curva c_sino = new Curva(512);
-		c_sino.addPonto(0, 0);
-		c_sino.addPonto(82.77, 8000);
-		c_sino.addPonto(512, 0);
-		Envoltoria sino = new Envoltoria(c_sino);
-		return sino;
-	}
-	private Envoltoria setPadrao()
-	{
-		Curva c_padrao = new Curva(512);
-		c_padrao.addPonto(0, 8000);
-		c_padrao.addPonto(512, 8000);
-		Envoltoria padrao = new Envoltoria(c_padrao);
-		return padrao;
-	}
 	private Envoltoria setFade_in()
 	{
 		Curva c_fadein = new Curva(512);
-		c_fadein.addPonto(0, 0);
-		c_fadein.addPonto(512, 8000);
+		//c_fadein.addPonto(0, 0);
+		c_fadein.addPonto(64, 2500);
+		c_fadein.addPonto(128, 5000);
+		c_fadein.addPonto(384, 5000);
+		c_fadein.addPonto(412, 2500);
+		//c_fadein.addPonto(511, 0);
 		Envoltoria fade_in = new Envoltoria(c_fadein);
 		return fade_in;
 	}
 	private Envoltoria setFade_out()
 	{
 		Curva c_fadein = new Curva(512);
-		c_fadein.addPonto(0, 8000);
-		c_fadein.addPonto(512, 0);
+		c_fadein.addPonto(120, 10000);
+		c_fadein.addPonto(512, 1000);
 		Envoltoria fade_out = new Envoltoria(c_fadein);
 		return fade_out;
 	}
@@ -87,74 +74,181 @@ public class Interface extends JFrame {
 	{
 		Envoltoria fade_out = setFade_out();
 		Envoltoria fade_in = setFade_in();
-		Envoltoria padrao = setPadrao();
-		Envoltoria sino = setSino();
-		Oscilador osc_fadein = new Oscilador(fade_in);
-		Oscilador osc_fadeout = new Oscilador(fade_out);
 		Oscilador osc_default = new Oscilador();
-		Oscilador osc_sino = new Oscilador(sino);
-		UnidadeH uH1 = new UnidadeH(osc_fadein, fade_in);
-		UnidadeH uH2 = new UnidadeH(osc_fadeout, fade_out);
-		UnidadeH uH3 = new UnidadeH(osc_default, padrao);
-		UnidadeH uH4 = new UnidadeH(osc_default, sino);
+		UnidadeH uH1 = new UnidadeH(osc_default, fade_in);
+		UnidadeH uH2 = new UnidadeH(osc_default, fade_out);
 		Ins1 = new InstrumentoAditivo();
+		Ins1.addUnidade(uH2);
 		Ins1.addUnidade(uH1);
-		Ins2 = new InstrumentoAditivo();
-		Ins2.addUnidade(uH2);
-		Ins3 = new InstrumentoAditivo();
-		Ins3.addUnidade(uH3);
-		Ins4 = new InstrumentoAditivo();
-		Ins4.addUnidade(uH4);
 	}
 	public void getTone()
 	{
 		prepara_Instrumentos();
 		//
-		LinkedList<Nota> A5_A4 = new LinkedList<Nota>();
-		LinkedList<Nota> A4_A3 = new LinkedList<Nota>();
-		LinkedList<Nota> A3_A2 = new LinkedList<Nota>();
-		LinkedList<Nota> A2_A1 = new LinkedList<Nota>();
-		float f=880,a=0,b=64;
-		for(int i=0;i<81;i++)
+		LinkedList<Float> frequencias1 = new LinkedList<Float>();
+		frequencias1.add(new Float(130.83));
+		frequencias1.add(new Float(138.59));
+		frequencias1.add(new Float(146.832));
+		frequencias1.add(new Float(155.56));//D#3
+		frequencias1.add(new Float(164.814));
+		frequencias1.add(new Float(174.614));
+		frequencias1.add(new Float(185.00));//F#3
+		frequencias1.add(new Float(195.998));
+		frequencias1.add(new Float(207.65));//G#3
+		frequencias1.add(new Float(220));
+		frequencias1.add(new Float(233.08));//A#3
+		frequencias1.add(new Float(246.942));
+		
+		LinkedList<Float> volumes1 = new LinkedList<Float>();
+		volumes1.add(new Float(1));
+		volumes1.add(new Float(0.96));
+		volumes1.add(new Float(0.92));
+		volumes1.add(new Float(0.88));
+		volumes1.add(new Float(0.84));
+		volumes1.add(new Float(0.80));
+		volumes1.add(new Float(0.75));
+		volumes1.add(new Float(0.71));
+		volumes1.add(new Float(0.67));
+		volumes1.add(new Float(0.63));
+		volumes1.add(new Float(0.59));
+		volumes1.add(new Float(0.55));
+		//
+		LinkedList<Float> frequencias2 = new LinkedList<Float>();
+		frequencias2.add(new Float(261.63));
+		frequencias2.add(new Float(69.30));
+		frequencias2.add(new Float(73.42));
+		frequencias2.add(new Float(77.78));
+		frequencias2.add(new Float(82.41));
+		frequencias2.add(new Float(87.31));
+		frequencias2.add(new Float(185.00));
+		frequencias2.add(new Float(98.00));
+		frequencias2.add(new Float(103.83));
+		frequencias2.add(new Float(110.00));
+		frequencias2.add(new Float(116.54));
+		frequencias2.add(new Float(123.47));
+		
+		LinkedList<Float> volumes2 = new LinkedList<Float>();
+		volumes2.add(new Float(0.5));
+		volumes2.add(new Float(0.54));
+		volumes2.add(new Float(0.58));
+		volumes2.add(new Float(0.62));
+		volumes2.add(new Float(0.66));
+		volumes2.add(new Float(0.70));
+		volumes2.add(new Float(0.75));
+		volumes2.add(new Float(0.79));
+		volumes2.add(new Float(0.83));
+		volumes2.add(new Float(0.87));
+		volumes2.add(new Float(0.91));
+		volumes2.add(new Float(0.95));
+		//
+		LinkedList<Float> frequencias3 = new LinkedList<Float>();
+		frequencias3.add(new Float(261.63));
+		frequencias3.add(new Float(277.18));
+		frequencias3.add(new Float(293.66));
+		frequencias3.add(new Float(311.13));
+		frequencias3.add(new Float(329.63));
+		frequencias3.add(new Float(349.23));
+		frequencias3.add(new Float(369.99));
+		frequencias3.add(new Float(392.00));
+		frequencias3.add(new Float(415.30));
+		frequencias3.add(new Float(440.00));
+		frequencias3.add(new Float(466.16));
+		frequencias3.add(new Float(493.88));
+		
+		LinkedList<Float> volumes3 = new LinkedList<Float>();
+		volumes3.add(new Float(0.5));
+		volumes3.add(new Float(0.46));
+		volumes3.add(new Float(0.42));
+		volumes3.add(new Float(0.38));
+		volumes3.add(new Float(0.34));
+		volumes3.add(new Float(0.30));
+		volumes3.add(new Float(0.25));
+		volumes3.add(new Float(0.21));
+		volumes3.add(new Float(0.17));
+		volumes3.add(new Float(0.13));
+		volumes3.add(new Float(0.09));
+		volumes3.add(new Float(0.05));
+		//
+		LinkedList<Float> frequencias4 = new LinkedList<Float>();
+		frequencias4.add(new Float(32.70));
+		frequencias4.add(new Float(34.65));
+		frequencias4.add(new Float(36.71));
+		frequencias4.add(new Float(38.89));
+		frequencias4.add(new Float(41.20));
+		frequencias4.add(new Float(43.65));
+		frequencias4.add(new Float(369.99));
+		frequencias4.add(new Float(49.00));
+		frequencias4.add(new Float(51.91));
+		frequencias4.add(new Float(55.00));
+		frequencias4.add(new Float(58.27));
+		frequencias4.add(new Float(61.74));
+		
+		LinkedList<Float> volumes4 = new LinkedList<Float>();
+		volumes4.add(new Float(0));
+		volumes4.add(new Float(0.04));
+		volumes4.add(new Float(0.08));
+		volumes4.add(new Float(0.12));
+		volumes4.add(new Float(0.16));
+		volumes4.add(new Float(0.20));
+		volumes4.add(new Float(0.25));
+		volumes4.add(new Float(0.29));
+		volumes4.add(new Float(0.33));
+		volumes4.add(new Float(0.37));
+		volumes4.add(new Float(0.41));
+		volumes4.add(new Float(0.45));
+		//
+		LinkedList<Nota> notas1 = new LinkedList<Nota>();
+		LinkedList<Nota> notas2 = new LinkedList<Nota>();
+		LinkedList<Nota> notas3 = new LinkedList<Nota>();
+		LinkedList<Nota> notas4 = new LinkedList<Nota>();
+		int i=0;
+		for(int j=0;j<120;j++)
 		{
-			if((i % 9)==0)
+			if((j%12)==0)
 			{
-				f=880;
-				a=0;
-				b=64;
+				i=0;
 			}
-			else
-			{
-				A5_A4.add(new Nota(1f,f,a));
-				A4_A3.add(new Nota(1f,f/2,64f));
-				A3_A2.add(new Nota(1f,f/4,64f));
-				A2_A1.add(new Nota(1f,f/8,b));
-				f-=55;
-				a+=8;
-				b-=8;
-			}
+			notas1.add(new Nota(1f,frequencias1.get(i),volumes1.get(i)*66));
+			notas2.add(new Nota(1f,frequencias2.get(i),volumes2.get(i)*66));
+			notas3.add(new Nota(1f,frequencias3.get(i),volumes3.get(i)*66));
+			notas4.add(new Nota(1f,frequencias4.get(i),volumes4.get(i)*66));
+			i++;
 		}
 		//
-		Melodia mA5_A4 = new Melodia(A5_A4);
-		Melodia mA4_A3 = new Melodia(A4_A3);
-		Melodia mA3_A2 = new Melodia(A3_A2);
-		Melodia mA2_A1 = new Melodia(A2_A1);
+		Melodia melodia1 = new Melodia(notas1);
+		Melodia melodia2 = new Melodia(notas2);
+		Melodia melodia3 = new Melodia(notas3);
+		Melodia melodia4 = new Melodia(notas4);
 		//
-		Voz vA5_A4 = new Voz(Ins4);
-		vA5_A4.addMelodia(mA5_A4);
-		Voz vA4_A3 = new Voz(Ins4);
-		vA4_A3.addMelodia(mA4_A3);
-		Voz vA3_A2 = new Voz(Ins4);
-		vA3_A2.addMelodia(mA3_A2);
-		Voz vA2_A1 = new Voz(Ins4);
-		vA2_A1.addMelodia(mA2_A1);
+		Voz voz1 = new Voz(Ins1);
+		voz1.addMelodia(melodia1);
+		Voz voz2 = new Voz(Ins1);
+		voz2.addMelodia(melodia2);
+		Voz voz3 = new Voz(Ins1);
+		voz3.addMelodia(melodia3);
+		Voz voz4 = new Voz(Ins1);
+		voz4.addMelodia(melodia4);
+		//
+		Voz voz1r = new Voz(Ins1);
+		voz1r.addMelodia(melodia1.inversao());
+		Voz voz2r = new Voz(Ins1);
+		voz2r.addMelodia(melodia2.inversao());
+		Voz voz3r = new Voz(Ins1);
+		voz3r.addMelodia(melodia3.inversao());
+		Voz voz4r = new Voz(Ins1);
+		voz4r.addMelodia(melodia4.inversao());
 		//
 		Polifonia poli = new Polifonia();
-		poli.addVoz(vA5_A4);
-		poli.addVoz(vA4_A3);
-		poli.addVoz(vA3_A2);
-		poli.addVoz(vA2_A1);
-		poli.setAndamento(0.2f);
+		poli.addVoz(voz1);
+		poli.addVoz(voz2);
+		poli.addVoz(voz3);
+		poli.addVoz(voz4);
+		//
+		/*poli.addVoz(voz4r);
+		poli.addVoz(voz3r);
+		poli.addVoz(voz2r);
+		poli.addVoz(voz1r);*/
+		poli.setAndamento(0.5f);
 		poli.setGanho(0.01f);
 		poli.getSom().visualiza();
 	}
