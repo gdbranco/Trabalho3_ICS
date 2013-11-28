@@ -2,10 +2,12 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Hashtable;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -23,8 +25,10 @@ import sintese.Polifonia;
 import sintese.Som;
 import sintese.UnidadeH;
 import sintese.Voz;
+import javax.swing.ImageIcon;
 
 public class Interface extends JFrame {
+		private Som som=null;
         private int andamento_atual = 100;
         private static final long serialVersionUID = 1L;
         InstrumentoAditivo Ins1;
@@ -58,15 +62,15 @@ public class Interface extends JFrame {
 
         public void prepara_Instrumentos() {
                 Envoltoria sustain = setSustain();
-                UnidadeH uH2 = new UnidadeH();
-                uH2.setEnvoltoria(sustain);
-                uH2.setLambda(0.5f);
+                UnidadeH uH1 = new UnidadeH();
+                uH1.setEnvoltoria(sustain);
+                uH1.setLambda(0.5f);
                 Oscilador osc = new Oscilador();
                 osc.setFrequencia(700f);
                 osc.setFase(1.2f);
-                uH2.setOscilador(osc);
+                uH1.setOscilador(osc);
                 Ins1 = new InstrumentoAditivo();
-                Ins1.addUnidade(uH2);
+                Ins1.addUnidade(uH1);
         }
         public Polifonia getTone(float andamento) {
             prepara_Instrumentos();
@@ -99,7 +103,7 @@ public class Interface extends JFrame {
             p1.addVoz(v2);
             p1.addVoz(v3);
             p1.addVoz(v4);
-            p1.setAndamento(andamento / 100);
+            p1.setAndamento(2.01f -(andamento / 100));
             p1.setGanho(0.5f);
             return p1;
     }
@@ -171,7 +175,7 @@ public class Interface extends JFrame {
                 {
                 	p1.addVoz(v4.get(i));
                 }
-                p1.setAndamento(andamento / 100);
+                p1.setAndamento(2 -(andamento / 100));
                 p1.setGanho(0.5f);
                 return p1;
         }
@@ -211,40 +215,60 @@ public class Interface extends JFrame {
         /**
          * Create the frame.
          */
-        public Interface() {
+        @SuppressWarnings("unchecked")
+		public Interface() {
                 setTitle("Efeito Shepard v1.0");
                 // inicia_lista();
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                setBounds(100, 100, 450, 285);
+                setBounds(100, 100, 285, 285);
                 contentPane = new JPanel();
                 contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
                 setContentPane(contentPane);
                 contentPane.setLayout(null);
-                JButton btnVisualizar = new JButton("Visualizar");
-                btnVisualizar.setBounds(335, 167, 81, 69);
+                JButton btnVisualizar = new JButton("");
+                btnVisualizar.setIcon(new ImageIcon("C:\\Users\\Shurd\\Kepler_Workspace\\Trabalho3_ICS\\src\\visu2.png"));
+                btnVisualizar.setBounds(163, 76, 81, 69);
                 contentPane.add(btnVisualizar);
 
-                JButton btnTocar = new JButton("Tocar");
-                btnTocar.setBounds(244, 167, 81, 69);
+                JButton btnTocar = new JButton("");
+                btnTocar.setIcon(new ImageIcon("C:\\Users\\Shurd\\Kepler_Workspace\\Trabalho3_ICS\\src\\tocar.png"));
+                btnTocar.setBounds(163, 156, 81, 69);
                 contentPane.add(btnTocar);
-
-                JPanel panel = new JPanel();
-                panel.setBounds(10, 11, 224, 125);
-                contentPane.add(panel);
                 final JSlider sliderAndamento = new JSlider();
+                sliderAndamento.setPaintLabels(true);
                 sliderAndamento.setFont(new Font("Arial", Font.PLAIN, 10));
+                sliderAndamento.setInverted(false);
                 sliderAndamento.setMaximum(200);
                 sliderAndamento.setToolTipText("Escolha o valor da % de andamento");
-                sliderAndamento.setMinimum(1);
-                sliderAndamento.setBounds(335, 118, 81, 23);
+                sliderAndamento.setMinimum(0);
+                sliderAndamento.setBounds(142, 28, 117, 23);
                 sliderAndamento.setValue(100);
                 contentPane.add(sliderAndamento);
 
                 textFAndamento = new JTextField();
-                textFAndamento.setBounds(244, 116, 86, 20);
+                textFAndamento.setBounds(10, 28, 117, 20);
                 contentPane.add(textFAndamento);
                 textFAndamento.setColumns(10);
                 textFAndamento.setText("Andamento : " + andamento_atual + "%");
+                
+                JButton btnNewButton = new JButton("");
+                btnNewButton.setIcon(new ImageIcon("C:\\Users\\Shurd\\Kepler_Workspace\\Trabalho3_ICS\\src\\salvar.png"));
+                btnNewButton.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent arg0) {
+                		Salvar();
+                	}
+                });
+                btnNewButton.setBounds(20, 156, 81, 69);
+                contentPane.add(btnNewButton);
+                
+                JButton btnNewButton_1 = new JButton("Sintetizar");
+                btnNewButton_1.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent arg0) {
+                		Sintetizar();
+                	}
+                });
+                btnNewButton_1.setBounds(20, 76, 107, 69);
+                contentPane.add(btnNewButton_1);
                 sliderAndamento.addChangeListener(new ChangeListener() {
                         @Override
                         public void stateChanged(ChangeEvent e) {
@@ -262,18 +286,34 @@ public class Interface extends JFrame {
                 btnTocar.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                    	Som som = getToneContinuo(andamento_atual).getSom();
-                    	som.salvawave("teste_continuo.wav");
-                        som.visualiza();
+                    	Tocar();
                     }
             });
                 btnVisualizar.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                        	Som som = getTone(andamento_atual).getSom();
-                        	som.salvawave("teste.wav");
-                            som.visualiza();
+                        	Visualizar();
                         }
                 });
+        }
+        private void Tocar()
+        {
+        	if(som!=null)
+        		som.tocawave();
+        }
+        private void Sintetizar()
+        {
+        	som = getTone(andamento_atual).getSom();
+        	som.setNome("teste");
+        }
+        private void Salvar()
+        {
+        	if(som!=null)
+        		som.salvawave();
+        }
+        private void Visualizar()
+        {
+        	if(som!=null)
+        		som.visualiza();
         }
 }
