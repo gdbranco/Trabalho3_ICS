@@ -28,7 +28,7 @@ import sintese.Voz;
 import javax.swing.ImageIcon;
 
 public class Interface extends JFrame {
-		private Som som=null;
+        private Som som=null;
         private int andamento_atual = 100;
         private static final long serialVersionUID = 1L;
         InstrumentoAditivo Ins1;
@@ -192,22 +192,22 @@ public class Interface extends JFrame {
         static {
         		for(int i=-21;i<-9;i++)
         		{
-        			frequencias1.add(new Double(getFreq(i)));
+        			frequencias1.add((getFreq(i)));
         		}
         		//
         		for(int i=-33;i<-21;i++)
         		{
-        			frequencias2.add(new Double(getFreq(i)));
+        			frequencias2.add((getFreq(i)));
         		}
         		//
         		for(int i=-9;i< 3;i++)
         		{
-        			frequencias3.add(new Double(getFreq(i)));
+        			frequencias3.add((getFreq(i)));
         		}
         		//
         		for(int i=-45;i<-33;i++)
         		{
-        			frequencias4.add(new Double(getFreq(i)));
+        			frequencias4.add((getFreq(i)));
         		}
         		//
         }
@@ -225,13 +225,13 @@ public class Interface extends JFrame {
                 contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
                 setContentPane(contentPane);
                 contentPane.setLayout(null);
-                JButton btnVisualizar = new JButton("");
-                btnVisualizar.setIcon(new ImageIcon("C:\\Users\\Shurd\\Kepler_Workspace\\Trabalho3_ICS\\src\\visu2.png"));
+                JButton btnVisualizar = new JButton("Visualize");
+                btnVisualizar.setIcon(new ImageIcon("visu2.png"));
                 btnVisualizar.setBounds(163, 76, 81, 69);
                 contentPane.add(btnVisualizar);
 
-                JButton btnTocar = new JButton("");
-                btnTocar.setIcon(new ImageIcon("C:\\Users\\Shurd\\Kepler_Workspace\\Trabalho3_ICS\\src\\tocar.png"));
+                JButton btnTocar = new JButton("Play");
+                btnTocar.setIcon(new ImageIcon("tocar.png"));
                 btnTocar.setBounds(163, 156, 81, 69);
                 contentPane.add(btnTocar);
                 final JSlider sliderAndamento = new JSlider();
@@ -251,8 +251,8 @@ public class Interface extends JFrame {
                 textFAndamento.setColumns(10);
                 textFAndamento.setText("Andamento : " + andamento_atual + "%");
                 
-                JButton btnNewButton = new JButton("");
-                btnNewButton.setIcon(new ImageIcon("C:\\Users\\Shurd\\Kepler_Workspace\\Trabalho3_ICS\\src\\salvar.png"));
+                JButton btnNewButton = new JButton("Save");
+                btnNewButton.setIcon(new ImageIcon("save.png"));
                 btnNewButton.addActionListener(new ActionListener() {
                 	public void actionPerformed(ActionEvent arg0) {
                 		Salvar();
@@ -299,7 +299,7 @@ public class Interface extends JFrame {
         private void Tocar()
         {
         	if(som!=null)
-        		som.tocawave();
+                        som.tocawave();
         }
         private void Sintetizar()
         {
